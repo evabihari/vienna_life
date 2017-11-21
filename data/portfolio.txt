@@ -1,0 +1,1 @@
+<Paper_name>|<valume>|<Currency>|<type>|

@@ -1,0 +1,6 @@
+*.beam
+Mnesia*
+*.pdf
+*.dump
+src/*.txt
+*.bup

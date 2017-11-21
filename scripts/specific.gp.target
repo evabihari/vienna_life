@@ -1,0 +1,38 @@
+# gnuplot script
+# input parameter: gnuplot -e 'type="SUM"; currency="HUF"' test.gp
+set terminal postscript eps enhanced color solid lw 2 font 'Helvetica,12
+if (exist("type")) print type
+if (!exist("type")) type="SUM"
+if (!exist("currency")) currency="HUF"
+set terminal x11 
+set key below
+set key left invert
+set grid y
+set yrange   [9000 :*]
+set y2range [10800000 :*]
+set y2tics 
+set decimalsign locale; set decimalsign ","
+set decimal locale 'en_US.UTF-8'
+set format y "%'.f"
+set format y2 "%'.f" 
+set ylabel "SUM" tc lt 1
+set ytics nomirror
+set xtics nomirror rotate by -45 scale 0 font ",10" 
+set key noinvert box
+set xdata time
+set timefmt '%Y-%m-%d'
+## set xrange ['2016-01-28':'2016-03-01']
+set xrange ['2016-01-28':*]
+set format x "%y-%m-%d"
+set datafile separator "|"
+set title "data/2016-7-28-HUF.dat egyenlegek "
+set yrange   [900000 :*]
+plot "data/2016-7-28-HUF.dat" using 1:(stringcolumn(2) eq "MKB"? column(3):1/0) title "MKB" ls 15*(rand(0)) lc rgb "blue"
+replot "data/2016-7-28-HUF.dat" using 1:(stringcolumn(2) eq "VL rendszeres"? column(3):1/0) title "VL rendszeres" ls 1 lc rgb "yellow"
+replot "data/2016-7-28-HUF.dat" using 1:(stringcolumn(2) eq "ML HUF"? column(3):1/0) title "ML HUF" ls 2 lc rgb "red"
+replot "data/2016-7-28-HUF.dat" using 1:(stringcolumn(2) eq "VL eseti"? column(3):1/0) title "VL eseti" ls 3 lc rgb "green"
+replot "data/2016-7-28-HUF.dat" using 1:(stringcolumn(2) eq "SUM"? column(3):1/0) title "SUM" lc rgb "black"  axes x1y2
+set output '| /usr/local/bin/ps2pdf - /Users/evabihari/Erlang_apps/vienna_life_value/data/2016-7-28-HUF.dat.pdf 
+set size 1,1 
+set term post portrait color "Times-Roman" 12 
+replot 
